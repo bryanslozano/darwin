@@ -2,12 +2,12 @@
 
 <section id="text-with-icons" style="background-color: {{ section.settings.background_color }}">
   <div class="section-header">
-    <h2>{{ section.settings.section_title }}</h2>
+    <h2>{{ section.settings.section_heading }}</h2>
   </div>
   <div class="icons-container">
     {% for block in section.blocks %}
       <div class="icon-block">
-        <img src="{{ block.settings.icon_image | img_url: 'medium' }}" alt="{{ block.settings.title }}">
+        <img src="{{ block.settings.icon_image | image_url: 'medium' }}" alt="{{ block.settings.title }}">
         <h3>{{ block.settings.title }}</h3>
         <p>{{ block.settings.text }}</p>
       </div>
@@ -22,10 +22,10 @@
   "class": "section",
   "settings": [
     {
-      "type": "text",
-      "id": "section_title",
-      "label": "Section Title",
-      "default": "Your Section Title"
+      "type": "richtext",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Your Section Heading"
     },
     {
       "type": "color",
