@@ -17,39 +17,26 @@
 {% schema %}
 {
   "name": "Text with Icons",
-  "tag": "section",
-  "class": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading"
-    },
-    {
-      "type": "textarea",
-      "id": "text",
-      "label": "Text"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon",
-      "label": "Icon"
-    }
-  ],
+  "settings": [],
   "blocks": [
     {
-      "type": "icon",
-      "name": "Icon",
+      "type": "icon_block",
+      "name": "Icon Block",
       "settings": [
         {
           "type": "image_picker",
-          "id": "icon_image",
+          "id": "icon",
           "label": "Icon Image"
         },
         {
           "type": "text",
-          "id": "icon_text",
-          "label": "Icon Text"
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
         }
       ]
     }
