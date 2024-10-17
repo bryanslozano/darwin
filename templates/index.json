@@ -224,7 +224,7 @@
       "type": "video-with-text-overlay",
       "settings": {
         "section_height": "medium",
-        "background_color": "",
+        "background_color": "#334fb4",
         "section_spacing_desktop": 50,
         "section_spacing_mobile": 36,
         "video": "shopify://files/videos/MagicHour_Trailer_15sec_CTA Tix.mp4",
