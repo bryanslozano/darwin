@@ -1,182 +1,122 @@
-{% style %}
-  #shopify-section-{{section.id}} {
-    background-color: {{ section.settings.background_color }};
+{{ 'video-with-text-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
-  #shopify-section-{{section.id}} {
-    padding-top: {{ section.settings.section_spacing_mobile }}px;
-    padding-bottom: {{ section.settings.section_spacing_mobile }}px;
-  }
-
-  @media screen and (min-width: 720px) {
-    #shopify-section-{{section.id}} {
-      padding-top: {{ section.settings.section_spacing_desktop }}px;
-      padding-bottom: {{ section.settings.section_spacing_desktop }}px;
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-{% endstyle %}
+{%- endstyle -%}
 
-<link rel="stylesheet" href="{{ 'video-with-text-overlay.css' | asset_url }}">
+{%- liquid
+  assign video_id = section.settings.video.id | default: section.settings.video_url.id
+  assign video_alt = section.settings.video.alt | default: section.settings.description
+  assign alt = 'sections.video.load_video' | t: description: video_alt | escape
+  assign poster = section.settings.video.preview_image | default: section.settings.cover_image
 
-<section
-  class="
-    video-with-text
-    video-with-text-section-height-{{ section.settings.section_height }}
-  "
-  style="padding: 0; margin: 0; {% if section.settings.section_height == 'small' %} height: 200px; {% elsif section.settings.section_height == 'medium' %} height: 400px; {% elsif section.settings.section_height == 'large' %} height: 600px; {% elsif section.settings.section_height == 'original' %} height: auto; {% endif %}"
->
-  <div
-    class="video-with-text-wrapper"
-    style="height: 100%; margin: 0; padding: 0; --desktop-height: {{ section.settings.desktop_fixed_height }}px; --mobile-height: {{ section.settings.mobile_fixed_height }}px;"
-  >
-    <div class="video-with-text-background">
-      {% if section.settings.video != blank %}
-        <div
-          class="video-wrapper"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; margin: 0; padding: 0;"
-        >
-          <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="{{ section.settings.video_url | asset_url }}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      {% endif %}
-      {% if section.settings.overlay_opacity != 0
-        and section.settings.overlay_background != 'rgba(0,0,0,0)'
-        and section.settings.overlay_style != 'none'
-      %}
-        {% assign opacity = section.settings.overlay_opacity | times: 0.01 %}
-        {% capture overlay_css %}
-          {%- if section.settings.overlay_style == 'solid' -%}
-            background-color: {{ section.settings.overlay_background | color_modify: 'alpha', opacity }};
-          {%- else -%}
-            {%- if section.settings.content_position contains 'top' -%}
-              {%- assign text_position = 'top' -%}
-            {%- elsif section.settings.content_position contains 'bottom' -%}
-              {%- assign text_position = 'bottom' -%}
-            {%- else -%}
-              {%- assign text_position = section.settings.content_position | remove: 'center-' -%}
-            {%- endif -%}
-            background: {%-
-              render 'gradient',
-              color: section.settings.overlay_background,
-              opacity: opacity,
-              text_position: text_position,
-            -%};
-          {%- endif -%}
-        {% endcapture %}
-        <div
-          class="video-with-text-overlay"
-          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; {{ overlay_css }}; z-index: 2;"
-        ></div>
-      {% endif %}
-    </div>
+  if section.settings.video != null
+    assign ratio_diff = section.settings.video.aspect_ratio | minus: poster.aspect_ratio | abs
+    if ratio_diff < 0.01 and ratio_diff > 0
+      assign fix_ratio = true
+    endif
+  endif
+-%}
 
-    <div
-      class="
-        video-with-text-content-wrapper
-        video-with-text-content-position-y-{{ section.settings.content_position | split: '-' | first }}
-        video-with-text-content-position-x-{{ section.settings.content_position | split: '-' | last }}
-      "
-    >
+{%- capture sizes -%}
+  {% if section.settings.full_width -%}
+    100vw
+  {%- else -%}
+    (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px)
+    calc(100vw - 10rem), 100vw
+  {%- endif %}
+{%- endcapture -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="video-section isolate{% unless section.settings.full_width %} page-width{% endunless %} section-{{ section.id }}-padding">
+    <h2 class="video-heading">{{ section.settings.heading_text }}</h2>
+    <div class="video-overlay">
       <div
-        class="video-with-text-content"
-        style="color: {{ section.settings.color }}; position: relative; z-index: 3;"
+        {% if section.settings.full_width %}
+          class="page-width"
+        {% endif %}
+        style="background-image: url('{{ poster }}');"
+        class="video-background"
       >
-        {% if section.settings.title != blank %}
-          <h2
-            class="video-with-text-heading"
-          >
-            {{ section.settings.title | escape }}
-          </h2>
-        {% endif %}
-
-        {% if section.settings.text != blank %}
-          <div
-            class="video-with-text-subheading rte"
-          >
-            {{ section.settings.text }}
-          </div>
-        {% endif %}
-
-        {% if section.settings.button_text != blank %}
-          <a
-            class="video-with-text-button {{ section.settings.button_style }}-button"
-            style="background-color: {{ section.settings.button_background_color }};"
-            {% if section.settings.link != blank %}
-              href="{{ section.settings.link }}"
-            {% endif %}
-          >
-            {{ section.settings.button_text | escape }}
-          </a>
-        {% endif %}
-
-        {% if section.settings.link != blank and section.settings.button_text == blank %}
-          <a class="video-with-text-link" href="{{ section.settings.link }}"></a>
-        {% endif %}
+        <video
+          id="{{ video_id }}"
+          alt="{{ alt }}"
+          poster="{{ poster }}"
+          controls
+          {% if fix_ratio %}
+            class="fix-ratio"
+          {% endif %}
+        >
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+        </video>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 {% schema %}
 {
-  "name": "Video with Text Overlay",
+  "name": "Video with text overlay",
   "tag": "section",
   "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.video.settings.heading.default",
+      "label": "t:sections.video.settings.heading.label"
+    },
+    {
       "type": "select",
-      "id": "section_height",
-      "label": "Section height",
+      "id": "heading_size",
       "options": [
         {
-          "value": "small",
-          "label": "Small"
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
         },
         {
-          "value": "medium",
-          "label": "Medium"
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
         },
         {
-          "value": "large",
-          "label": "Large"
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
         },
         {
-          "value": "original",
-          "label": "Original aspect ratio"
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
         }
       ],
-      "default": "medium"
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Section background color"
-    },
-    {
-      "type": "range",
-      "id": "section_spacing_desktop",
-      "label": "Desktop section spacing",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 50
-    },
-    {
-      "type": "range",
-      "id": "section_spacing_mobile",
-      "label": "Mobile section spacing",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 36
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "label": "t:sections.video.settings.enable_video_looping.label",
+      "default": false
     },
     {
       "type": "header",
-      "content": "Video"
+      "content": "t:sections.video.settings.header__1.content"
     },
     {
       "type": "video",
@@ -185,164 +125,76 @@
     },
     {
       "type": "header",
-      "content": "Overlay"
+      "content": "t:sections.video.settings.header__2.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.video.settings.paragraph.content"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "label": "t:sections.video.settings.video_url.label",
+      "info": "t:sections.video.settings.video_url.info"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "t:sections.video.settings.cover_image.label"
     },
     {
       "type": "text",
-      "id": "title",
-      "label": "Heading",
-      "default": "Video with text overlay"
+      "id": "description",
+      "label": "t:sections.video.settings.description.label",
+      "info": "t:sections.video.settings.description.info"
     },
     {
-      "type": "richtext",
-      "id": "text",
-      "label": "Text",
-      "default": "<p>Say a bit about your brand, a specific product, or promotion.</p>"
+      "type": "header",
+      "content": "t:sections.video.settings.header__3.content"
     },
     {
-      "type": "select",
-      "id": "content_position",
-      "label": "Content position",
-      "options": [
-        {
-          "value": "top-left",
-          "label": "Top left"
-        },
-        {
-          "value": "top-center",
-          "label": "Top center"
-        },
-        {
-          "value": "top-right",
-          "label": "Top right"
-        },
-        {
-          "value": "center-left",
-          "label": "Center left"
-        },
-        {
-          "value": "center-center",
-          "label": "Center center"
-        },
-        {
-          "value": "center-right",
-          "label": "Center right"
-        },
-        {
-          "value": "bottom-left",
-          "label": "Bottom left"
-        },
-        {
-          "value": "bottom-center",
-          "label": "Bottom center"
-        },
-        {
-          "value": "bottom-right",
-          "label": "Bottom right"
-        }
-      ],
-      "default": "center-center"
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:sections.video.settings.full_width.label",
+      "default": false
     },
     {
-      "type": "select",
-      "id": "overlay_style",
-      "label": "Overlay style",
-      "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "solid",
-          "label": "Solid"
-        },
-        {
-          "value": "gradient",
-          "label": "Gradient"
-        }
-      ],
-      "default": "solid"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     },
     {
-      "type": "color",
-      "id": "color",
-      "label": "Text color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "overlay_background",
-      "label": "Background color",
-      "default": "#000000"
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
       "type": "range",
-      "id": "overlay_opacity",
-      "label": "Background color opacity",
+      "id": "padding_top",
       "min": 0,
       "max": 100,
-      "step": 1,
-      "unit": "%",
-      "default": 50
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
     },
     {
-      "type": "url",
-      "id": "link",
-      "label": "Link"
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button text",
-      "default": "Button"
-    },
-    {
-      "type": "select",
-      "id": "button_style",
-      "label": "Button style",
-      "options": [
-        {
-          "value": "primary",
-          "label": "Primary"
-        },
-        {
-          "value": "secondary",
-          "label": "Secondary"
-        },
-        {
-          "value": "link",
-          "label": "Link"
-        }
-      ],
-      "default": "primary"
-    },
-    {
-      "type": "color",
-      "id": "button_background_color",
-      "label": "Button background color",
-      "default": "#007bff"
-    },
-    {
-      "type": "color",
-      "id": "button_hover_background_color",
-      "label": "Button hover background color",
-      "default": "#0056b3"
-    },
-    {
-      "type": "color",
-      "id": "button_active_background_color",
-      "label": "Button active background color",
-      "default": "#004085"
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
     }
   ],
   "presets": [
     {
-      "category": "Video",
       "name": "Video with text overlay"
     }
-  ],
-  "enabled_on": {
-    "templates": ["index", "product", "page"]
-  }
+  ]
 }
 {% endschema %}

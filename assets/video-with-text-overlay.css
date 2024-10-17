@@ -1,54 +1,96 @@
-/* video-with-text-overlay.css */
-.video-with-text-wrapper {
+.video-section__media {
+    --ratio-percent: 56.25%;
     position: relative;
-    height: 100%;
+    padding-bottom: calc(var(--ratio-percent) - var(--media-border-width));
+  }
+  
+  /* Needed for gradient continuity with or without animation so that transparent PNG images come up as we would expect */
+  .scroll-trigger:where(.gradient.video-section__media) {
+    background: transparent;
+  }
+  
+  .video-section__media.global-media-settings--full-width {
+    padding-bottom: var(--ratio-percent);
+  }
+  
+  .video-section__media.deferred-media {
+    box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
+      rgba(var(--color-shadow), var(--media-shadow-opacity));
+  }
+  
+  .video-section__media.deferred-media:after {
+    content: none;
+  }
+  
+  .video-section__poster.deferred-media__poster:focus {
+    outline-offset: 0.3rem;
+  }
+  
+  .video-section__media iframe {
+    background-color: rgba(var(--color-foreground), 0.03);
+    border: 0;
+  }
+  
+  .video-section__poster,
+  .video-section__media iframe,
+  .video-section__media video {
+    position: absolute;
     width: 100%;
+    height: 100%;
+  }
+  
+  .video-section__media video {
+    background: #000000;
+  }
+  
+  .video-section__media.media-fit-cover video {
+    object-fit: cover;
+  }
+  
+
+
+.video-section {
+    position: relative;
     overflow: hidden;
   }
   
-  .video-with-text-background {
+  .video-heading {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #fff;
+  }
+  
+  .video-overlay {
+    position: relative;
+  }
+  
+  .video-background {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .video-background video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .video-overlay::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    z-index: -1;
+    background: rgba(0, 0, 0, 0.5); /* Adjust the overlay color and opacity as needed */
+    z-index: 1;
   }
   
-  .video-with-text-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .video-with-text-content-position-y-top {
-    justify-content: flex-start;
-  }
-  
-  .video-with-text-content-position-y-center {
-    justify-content: center;
-  }
-  
-  .video-with-text-content-position-y-bottom {
-    justify-content: flex-end;
-  }
-  
-  .video-with-text-content-position-x-left {
-    align-items: flex-start;
-  }
-  
-  .video-with-text-content-position-x-center {
-    align-items: center;
-  }
-  
-  .video-with-text-content-position-x-right {
-    align-items: flex-end;
-  }
-  
-  .video-with-text-heading, 
-  .video-with-text-button {
-    margin: 10px 0;
+  .video-overlay video {
+    position: relative;
+    z-index: 2;
   }
