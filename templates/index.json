@@ -223,24 +223,16 @@
     "video_with_text_overlay_7fpVhF": {
       "type": "video-with-text-overlay",
       "settings": {
-        "section_height": "medium",
-        "background_color": "rgba(0,0,0,0)",
-        "section_spacing_desktop": 50,
-        "section_spacing_mobile": 36,
+        "heading": "Text above video",
+        "heading_size": "h1",
+        "enable_video_looping": true,
         "video": "shopify://files/videos/MagicHour_Trailer_15sec_CTA Tix.mp4",
-        "title": "Video with text overlay",
-        "text": "<p>Say a bit about your brand, a specific product, or promotion.</p>",
-        "content_position": "center-center",
-        "overlay_style": "gradient",
-        "color": "#ffffff",
-        "overlay_background": "#242833",
-        "overlay_opacity": 44,
-        "link": "",
-        "button_text": "Button",
-        "button_style": "primary",
-        "button_background_color": "#007bff",
-        "button_hover_background_color": "#0056b3",
-        "button_active_background_color": "#004085"
+        "video_url": "",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
