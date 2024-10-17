@@ -1,0 +1,15 @@
+/* video-with-text-overlay.css */
+.video-with-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.video-with-text-wrapper h1, 
+.video-with-text-wrapper button {
+  margin: 10px 0;
+}
