@@ -223,12 +223,25 @@
     "video_with_text_overlay_7fpVhF": {
       "type": "video-with-text-overlay",
       "settings": {
+        "section_height": "medium",
+        "background_color": "",
+        "section_spacing_desktop": 50,
+        "section_spacing_mobile": 36,
         "video": "shopify://files/videos/MagicHour_Trailer_15sec_CTA Tix.mp4",
         "video_url": "",
-        "cover_image": "shopify://shop_images/DALL_E_2024-10-11_23.31.04_-_A_high-performance_graphics_card_for_a_PC_featuring_modern_cooling_fans_and_a_sleek_design._The_background_should_be_simple_and_professional_to_empha.webp",
-        "heading_text": "heading",
-        "heading_text_color": "#242833",
-        "overlay_type": "none"
+        "title": "Video with text overlay",
+        "text": "<p>Say a bit about your brand, a specific product, or promotion.</p>",
+        "content_position": "center-center",
+        "overlay_style": "solid",
+        "color": "#ffffff",
+        "overlay_background": "#000000",
+        "overlay_opacity": 50,
+        "link": "shopify://collections/cases",
+        "button_text": "Button",
+        "button_style": "primary",
+        "button_background_color": "#007bff",
+        "button_hover_background_color": "#0056b3",
+        "button_active_background_color": "#004085"
       }
     }
   },
