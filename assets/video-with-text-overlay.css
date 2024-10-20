@@ -1,59 +1,84 @@
 .video-section {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .video-heading {
-    text-align: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-  }
-  
-  .video-overlay {
-    position: relative;
-  }
-  
-  .video-background {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .video-background video {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  
-  .video-overlay.none::before {
-    content: none;
-  }
-  
-  .video-overlay.solid::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Adjust the overlay color and opacity as needed */
-    z-index: 1;
-  }
-  
-  .video-overlay.gradient::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* Adjust the gradient as needed */
-    z-index: 1;
-  }
-  
-  .video-overlay video {
-    position: relative;
-    z-index: 2;
-  }
+  position: relative;
+  overflow: hidden;
+  padding: 2rem; /* Adjust padding if needed */
+}
+
+.video-heading {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2rem; /* You can make this dynamic by using rem/em values based on section settings */
+  color: #ffffff; /* Set the color to ensure text contrast over the video */
+}
+
+.video-overlay {
+  position: absolute; /* Changed to absolute for overlay positioning */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* Positioned above the video background */
+}
+
+.video-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden; /* To handle large cover images */
+}
+
+.video-background video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-overlay.none::before {
+  content: none; /* Keeps overlay off if not required */
+}
+
+.video-overlay.solid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Adjust the overlay color and opacity as needed */
+  z-index: 1; /* Below overlay text but above video */
+}
+
+.video-overlay.gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* Adjust the gradient as needed */
+  z-index: 1;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 2rem; /* Adjust as needed for alignment */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3; /* Make sure the button stays on top */
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #ffffff; /* Button text color */
+  background-color: #ff6600; /* Button background color */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth color transition on hover */
+}
+
+.button:hover {
+  background-color: #cc5200; /* Darken on hover */
+}

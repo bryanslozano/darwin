@@ -29,31 +29,24 @@
   endif
 -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="video-section isolate{% unless section.settings.full_width %} page-width{% endunless %} section-{{ section.id }}-padding">
-    <h2 class="video-heading" style="color: {{ section.settings.heading_text_color }}">
-      {{ section.settings.heading_text }}
-    </h2>
-    <div class="video-overlay {{ section.settings.overlay_type }}">
-      <div
-        {% if section.settings.full_width %}
-          class="page-width"
-        {% endif %}
-        style="background-image: url('{{ poster }}');"
-        class="video-background"
-      >
-        <video
-          id="{{ video_id }}"
-          alt="{{ alt }}"
-          poster="{{ poster }}"
-          controls
-          {% if fix_ratio %}
-            class="fix-ratio"
-          {% endif %}
-        >
-          <source src="{{ section.settings.video_url | asset_url }}" type="video/mp4">
-        </video>
-      </div>
+<div class="video-section">
+  <div class="video-background">
+    {% if section.settings.video_type == 'youtube' %}
+      <!-- Embed Youtube Video -->
+      <iframe
+        src="https://www.youtube.com/embed/{{ section.settings.youtube_id }}"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    {% elsif section.settings.video_type == 'shopify' %}
+      <!-- Embed Shopify Video -->
+      <video src="{{ section.settings.shopify_video_url }}" controls></video>
+    {% endif %}
+  </div>
+  <div class="video-overlay {{ section.settings.overlay_type }}">
+    <h2 class="video-heading">{{ section.settings.heading_text }}</h2>
+    <div class="button-container">
+      <a href="{{ section.settings.button_link }}" class="button">{{ section.settings.button_text }}</a>
     </div>
   </div>
 </div>
