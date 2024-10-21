@@ -1,25 +1,11 @@
 {{ 'video-with-text-overlay.css' | asset_url | stylesheet_tag }}
 {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-
 <div class="video-section">
   <div class="video-background">
-    {% if section.settings.video_type == 'shopify' and section.settings.shopify_video_url != blank %}
+    {% if section.settings.video_type == 'video' and section.settings.video != blank %}
       <video autoplay loop muted controls>
-        <source src="{{ section.settings.shopify_video_url | asset_url }}" type="video/mp4">
+        <source src="{{ section.settings.video | asset_url }}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     {% elsif section.settings.video_type == 'youtube' %}
