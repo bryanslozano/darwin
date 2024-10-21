@@ -239,7 +239,7 @@
         "link": "shopify://collections/cases",
         "button_text": "Button",
         "button_style": "primary",
-        "button_background_color": "#007bff",
+        "button_background_color": "#121212",
         "button_hover_background_color": "#0056b3",
         "button_active_background_color": "#004085"
       }
