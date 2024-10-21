@@ -1,29 +1,106 @@
 {{ 'video-with-text-overlay.css' | asset_url | stylesheet_tag }}
 {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 
-<div class="video-section">
-  <div class="video-background">
-    {% if section.settings.video_type == 'video' and section.settings.video != blank %}
-      <video autoplay loop muted controls>
-        <source src="{{ section.settings.video | asset_url }}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    {% elsif section.settings.video_type == 'youtube' %}
-      <!-- Embed YouTube Video -->
-      <iframe
-        src="https://www.youtube.com/embed/{{ section.settings.youtube_id }}"
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
-    {% endif %}
-  </div>
-  <div class="video-overlay {{ section.settings.overlay_type }}">
-    <h2 class="video-heading">{{ section.settings.heading_text }}</h2>
-    <div class="button-container">
-      <a href="{{ section.settings.button_link }}" class="button">{{ section.settings.button_text }}</a>
+<section
+  class="
+    video-with-text
+    video-with-text-section-height-{{ section.settings.section_height }}
+  "
+  style="padding: 0; margin: 0; {% if section.settings.section_height == 'small' %} height: 200px; {% elsif section.settings.section_height == 'medium' %} height: 400px; {% elsif section.settings.section_height == 'large' %} height: 600px; {% elsif section.settings.section_height == 'original' %} height: auto; {% endif %}"
+>
+  <div
+    class="video-with-text-wrapper"
+    style="height: 100%; margin: 0; padding: 0; --desktop-height: {{ section.settings.desktop_fixed_height }}px; --mobile-height: {{ section.settings.mobile_fixed_height }}px;"
+  >
+    <div class="video-with-text-background">
+      {% if section.settings.video_url != blank %}
+        <div
+          class="video-wrapper"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; margin: 0; padding: 0;"
+        >
+          <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
+            <source src="{{ section.settings.video_url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      {% endif %}
+      {% if section.settings.overlay_opacity != 0
+        and section.settings.overlay_background != 'rgba(0,0,0,0)'
+        and section.settings.overlay_style != 'none'
+      %}
+        {% assign opacity = section.settings.overlay_opacity | times: 0.01 %}
+        {% capture overlay_css %}
+          {%- if section.settings.overlay_style == 'solid' -%}
+            background-color: {{ section.settings.overlay_background | color_modify: 'alpha', opacity }};
+          {%- else -%}
+            {%- if section.settings.content_position contains 'top' -%}
+              {%- assign text_position = 'top' -%}
+            {%- elsif section.settings.content_position contains 'bottom' -%}
+              {%- assign text_position = 'bottom' -%}
+            {%- else -%}
+              {%- assign text_position = section.settings.content_position | remove: 'center-' -%}
+            {%- endif -%}
+            background: {%-
+              include 'gradient',
+              color: section.settings.overlay_background,
+              opacity: opacity,
+              text_position: text_position,
+            -%};
+          {%- endif -%}
+        {% endcapture %}
+        <div
+          class="video-with-text-overlay"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; {{ overlay_css }}; z-index: 2;"
+        ></div>
+      {% endif %}
+    </div>
+
+    <div
+      class="
+        video-with-text-content-wrapper
+        video-with-text-content-position-y-{{ section.settings.content_position | split: '-' | first }}
+        video-with-text-content-position-x-{{ section.settings.content_position | split: '-' | last }}
+      "
+    >
+      <div
+        class="video-with-text-content"
+        style="color: {{ section.settings.color }}; position: relative; z-index: 3;"
+      >
+        {% if section.settings.title != blank %}
+          <h2
+            class="video-with-text-heading"
+          >
+            {{ section.settings.title | escape }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div
+            class="video-with-text-subheading rte"
+          >
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_text != blank %}
+          <a
+            class="video-with-text-button {{ section.settings.button_style }}-button"
+            style="background-color: {{ section.settings.button_background_color }};"
+            {% if section.settings.link != blank %}
+              href="{{ section.settings.link }}"
+            {% endif %}
+          >
+            {{ section.settings.button_text | escape }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.link != blank and section.settings.button_text == blank %}
+          <a class="video-with-text-link" href="{{ section.settings.link }}"></a>
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 {% schema %}
 {
