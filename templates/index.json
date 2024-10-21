@@ -228,7 +228,7 @@
         "section_spacing_desktop": 50,
         "section_spacing_mobile": 36,
         "video": "shopify://files/videos/MagicHour_Trailer_15sec_CTA Tix.mp4",
-        "video_url": "",
+        "video_url": "https://cdn.shopify.com/videos/c/o/v/9445518fb5ae4c7997f6af54ef093f47.mp4",
         "title": "Video with text overlay",
         "text": "<p>Say a bit about your brand, a specific product, or promotion.</p>",
         "content_position": "center-center",
