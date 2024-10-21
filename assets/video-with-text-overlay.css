@@ -1,79 +1,49 @@
-.video-section {
+
+.video-with-text {
+  padding-top: 20px;
+  padding-bottom: 20px;
   position: relative;
-  overflow: hidden;
-  padding: 2rem;
 }
 
-.video-background {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-}
-
-.video-background video {
-  width: 100%;
-  height: 100%; /* Ensure it takes up the full container */
-  object-fit: cover;
-  display: block;
-}
-
-.video-overlay {
-  position: absolute; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2; 
-  pointer-events: none; /* Ensure overlay does not block video control interaction */
-}
-
-.video-overlay.none::before {
-  content: none; /* Keeps overlay off if not required */
-}
-
-.video-overlay.solid::before {
-  content: '';
+.video-with-text-content-wrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Adjust the overlay color and opacity as needed */
-  z-index: 1; /* Below overlay text but above video */
-}
-
-.video-overlay.gradient::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* Adjust the gradient as needed */
-  z-index: 1;
-}
-
-.button-container {
-  position: absolute;
-  bottom: 2rem; /* Adjust as needed for alignment */
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  z-index: 3; /* Make sure the button stays on top */
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  width: 100%;
+  text-align: center;
 }
 
-.button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  color: #ffffff; /* Button text color */
-  background-color: #ff6600; /* Button background color */
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth color transition on hover */
+@media screen and (min-width: 720px) {
+  .video-with-text {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
 }
 
-.button:hover {
-  background-color: #cc5200; /* Darken on hover */
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-with-text-button {
+background-color: var(--button-bg-color, #007bff); /* Use CSS variable with fallback */
+color: #ffffff;
+padding: 0.75rem 1.5rem;
+border: none;
+border-radius: 4px;
+text-decoration: none;
+font-weight: bold;
+display: inline-block;
+transition: background-color 0.3s, transform 0.3s;
+}
+
+.video-with-text-button:hover {
+background-color: var(--button-hover-bg-color, #0056b3); /* Use CSS variable with fallback for hover */
+transform: scale(1.05);
+}
+
+.video-with-text-button:active {
+background-color: var(--button-active-bg-color, #004085); /* Use CSS variable with fallback for active state */
 }

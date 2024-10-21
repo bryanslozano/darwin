@@ -19,7 +19,7 @@
           style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; margin: 0; padding: 0;"
         >
           <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="{{ section.settings.video_url }}" type="video/mp4">
+            <source src="{{ section.settings.video_url | asset_url }}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
@@ -41,7 +41,7 @@
               {%- assign text_position = section.settings.content_position | remove: 'center-' -%}
             {%- endif -%}
             background: {%-
-              include 'gradient',
+              render 'gradient',
               color: section.settings.overlay_background,
               opacity: opacity,
               text_position: text_position,
