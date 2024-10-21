@@ -1,23 +1,7 @@
 .video-section {
   position: relative;
   overflow: hidden;
-  padding: 2rem; /* Adjust padding if needed */
-}
-
-.video-heading {
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 2rem; /* You can make this dynamic by using rem/em values based on section settings */
-  color: #ffffff; /* Set the color to ensure text contrast over the video */
-}
-
-.video-overlay {
-  position: absolute; /* Changed to absolute for overlay positioning */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2; /* Positioned above the video background */
+  padding: 2rem;
 }
 
 .video-background {
@@ -26,13 +10,24 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  overflow: hidden; /* To handle large cover images */
+  overflow: hidden;
 }
 
 .video-background video {
   width: 100%;
-  height: auto;
+  height: 100%; /* Ensure it takes up the full container */
+  object-fit: cover;
   display: block;
+}
+
+.video-overlay {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+  pointer-events: none; /* Ensure overlay does not block video control interaction */
 }
 
 .video-overlay.none::before {
