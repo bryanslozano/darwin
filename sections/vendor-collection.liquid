@@ -1,6 +1,9 @@
-{% schema %}
-  {
-    "name": "Section name",
-    "settings": []
-  }
-{% endschema %}
+{% if collection.title and collection.products.first.vendor == collection.title %}
+  <div class="vendor-info">
+    <h1>{{ collection.title }}</h1>
+    <p>Browse all products from {{ collection.title }}</p>
+    {% if collection.metafields.custom.vendor_description %}
+      <p>{{ collection.metafields.custom.vendor_description }}</p>
+    {% endif %}
+  </div>
+{% endif %}
